@@ -21,7 +21,7 @@
                     <i data-lucide="layout-dashboard"></i>
                     <span>Inicio</span>
                 </a>
-                <a href="#" class="nav-item">
+                <a href="{% url "create_user" %}" class="nav-item">
                     <i data-lucide="users"></i>
                     <span>Usuarios</span>
                 </a>
@@ -43,12 +43,27 @@
         <main class="main-content">
             <header class="topbar">
                 <button id="menu-toggle" class="menu-btn"><i data-lucide="menu"></i></button>
-                <div class="topbar-right">
-                    <div class="user-info">
-                        <span>{{ request.user.username|default:"Admin" }}</span>
-                        <i data-lucide="user" class="user-icon"></i>
+                    <div class="topbar-right">
+                        <div class="user-menu-container">
+                            <div class="user-info" id="profile-menu-trigger" style="cursor: pointer;">
+                                <span>{{ request.user.username|default:"Admin" }}</span>
+                                <i data-lucide="user" class="user-icon"></i>
+                            </div>
+                            
+                            <div class="dropdown-menu no-roundness" id="profile-dropdown" style="display: none;">
+                                <a href="#" class="dropdown-item">
+                                    <i data-lucide="settings" size="16"></i> Mi Perfil
+                                </a>
+                                <hr class="dropdown-divider">
+                                <form action="{% url 'logout' %}" method="post" style="margin: 0;">
+                                    {% csrf_token %}
+                                    <button type="submit" class="dropdown-item logout-btn">
+                                        <i data-lucide="log-out" size="16"></i> Cerrar Sesión
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
                     </div>
-                </div>
             </header>
 
             <div class="content-area">

@@ -1,11 +1,11 @@
+# users/urls.py
 from django.urls import path
-from django.contrib.auth.views import LoginView, LogoutView
-from . import views
+from django.contrib.auth.views import LogoutView
+from .views import RoleBasedLoginView
 
 urlpatterns = [
-    # Reemplazamos la vista funcional por la clase nativa
-    path('login/', LoginView.as_view(template_name='login.html'), name='login'),
+    # Usamos nuestra vista basada en clase personalizada
+    path('login/', RoleBasedLoginView.as_view(), name='login'),
     path('logout/', LogoutView.as_view(next_page='login'), name='logout'),
-    path('register/', views.register_view, name='register'),
-    path('admin/', views.admin_view, name='admin')
+    # Se eliminó la ruta 'register' intencionalmente.
 ]

@@ -31,7 +31,7 @@ def create_user(request):
             )
             messages.success(request, f"Usuario {u_name} creado con éxito.")
             return redirect('home')
-    return render(request, 'create_user.html')
+    return render(request, 'create_users.html')
 
 # Agregamos las funciones faltantes para que las URLs no rompan
 def service(request):

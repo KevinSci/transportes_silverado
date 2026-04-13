@@ -1,21 +1,19 @@
 # users/views.py
-from django.shortcuts import render, redirect
-from django.contrib.auth import login
-from .models import CustomUser # Asegúrate de haber creado el modelo CustomUser primero
+from django.contrib.auth.views import LoginView
+from django.urls import reverse_lazy
 
-def register_view(request):
-    # Por ahora, una vista simple para evitar el error de atributo
-    if request.method == 'POST':
-        # Lógica de registro aquí
-        pass
-    return render(request, 'register.html')
+class RoleBasedLoginView(LoginView):
+    template_name = 'login.html'
 
-def login_view(request):
-    # Esta es opcional si usas LoginView de Django en urls.py
-    return render(request, 'login.html')
-
-def logout_view(request):
-    pass
-
-def admin_view(request):
-    pass
+    def get_success_url(self):
+        user = self.request.user
+        
+        # Redirección basada en el rol
+        if user.role in ['administrador', 'propietario']:
+            return reverse_lazy('home')  # Nombre de la URL de tu dashboard
+        elif user.role == 'staff':
+            # Asumimos que crearás una vista y URL llamada 'staff_home' en el módulo staff
+            return reverse_lazy('staff_home') 
+        
+        # Fallback de seguridad
+        return reverse_lazy('login')
