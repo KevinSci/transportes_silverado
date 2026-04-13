@@ -121,6 +121,27 @@ body {
     color: var(--text-muted);
 }
 
+/* static/css/base.css */
+.sidebar-header {
+    padding: 20px 24px; /* Ajustado para dar más espacio al logo */
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Centra el logo en el sidebar */
+    border-bottom: 1px solid var(--border-color);
+}
+
+.sidebar-logo {
+    max-width: 100%;
+    height: 100px; /* Ajusta esta altura según prefieras */
+    display: block;
+    object-fit: contain;
+}
+
+.sidebar-logo-link {
+    text-decoration: none;
+    display: block;
+}
+
 /* Main Content */
 .main-content {
     flex: 1;

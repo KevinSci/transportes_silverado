@@ -12,8 +12,9 @@
     <div class="dashboard-container">
         <aside class="sidebar" id="sidebar">
             <div class="sidebar-header">
-                <div class="logo-placeholder"></div>
-                <h2>TRANSPORTES SILVERADO</h2>
+                <a href="{% url 'home' %}" class="sidebar-logo-link">
+                    <img src="{% static 'img/logo.svg' %}" alt="Transportes Silverado" class="sidebar-logo">
+                </a>
             </div>
             <nav class="sidebar-nav">
                 <a href="#" class="nav-item">

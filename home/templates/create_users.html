@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block title %}Crear Nuevo Usuario{% endblock %}
+
+{% block content %}
+<div class="data-section no-roundness">
+    <h3>Crear Nuevo Empleado / Usuario</h3>
+    
+    {% if messages %}
+        <ul style="color: var(--danger-color); margin-bottom: 15px;">
+            {% for message in messages %}
+                <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    <form method="post" style="max-width: 500px;">
+        {% csrf_token %}
+        <div style="margin-bottom: 15px;">
+            <label>Nombre de Usuario</label>
+            <input type="text" name="username" class="filter-select" style="width: 100%;" required>
+        </div>
+        
+        <div style="margin-bottom: 15px;">
+            <label>Contraseña Temporal</label>
+            <input type="password" name="password" class="filter-select" style="width: 100%;" required>
+        </div>
+
+        <div style="margin-bottom: 15px;">
+            <label>Número de Teléfono</label>
+            <input type="text" name="phone" class="filter-select" style="width: 100%;">
+        </div>
+
+        <div style="margin-bottom: 15px;">
+            <label>Rol Asignado</label>
+            <select name="role" class="filter-select" style="width: 100%;" required>
+                <option value="staff">Staff</option>
+                <option value="administrador">Administrador</option>
+                <option value="propietario">Propietario</option>
+            </select>
+        </div>
+
+        <button type="submit" class="action-btn">Crear Usuario</button>
+    </form>
+</div>
+{% endblock %}
