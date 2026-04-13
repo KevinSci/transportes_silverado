@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block title %}Resumen - MiApp{% endblock %}
+
+{% block content %}
+<h1 class="page-title">Resumen del Sistema</h1>
+
+<div class="metrics-grid">
+    <div class="metric-card no-roundness">
+        <h3>Total de servicios</h3>
+        <p class="metric-value">10</p>
+    </div>
+    <div class="metric-card no-roundness">
+        <h3>Gastos de mantenimiento</h3>
+        <p class="metric-value">$45,230</p>
+    </div>
+    <div class="metric-card no-roundness">
+        <h3>Compras pendientes</h3>
+        <p class="metric-value">3</p>
+    </div>
+</div>
+
+<div class="data-section no-roundness">
+    <h3>Actividad Reciente</h3>
+    <div class="placeholder-box no-roundness">
+        <p>Los datos dinámicos irán aquí...</p>
+    </div>
+</div>
+{% endblock %}

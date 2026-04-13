@@ -1,0 +1,62 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es-MX">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Panel de Control{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="dashboard-container">
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="logo-placeholder"></div>
+                <h2>TRANSPORTES SILVERADO</h2>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="#" class="nav-item">
+                    <i data-lucide="layout-dashboard"></i>
+                    <span>Inicio</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <i data-lucide="users"></i>
+                    <span>Usuarios</span>
+                </a>
+                <a href="#" class="nav-item active">
+                    <i data-lucide="wrench"></i>
+                    <span>Mantenimiento</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <i data-lucide="clipboard-list"></i>
+                    <span>Actividades</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <i data-lucide="settings"></i>
+                    <span>Configuración</span>
+                </a>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <header class="topbar">
+                <button id="menu-toggle" class="menu-btn"><i data-lucide="menu"></i></button>
+                <div class="topbar-right">
+                    <div class="user-info">
+                        <span>{{ request.user.username|default:"Admin" }}</span>
+                        <i data-lucide="user" class="user-icon"></i>
+                    </div>
+                </div>
+            </header>
+
+            <div class="content-area">
+                {% block content %}{% endblock %}
+            </div>
+        </main>
+    </div>
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="{% static 'js/base.js' %}"></script>
+</body>
+</html>
