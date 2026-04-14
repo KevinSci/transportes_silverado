@@ -20,6 +20,26 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    const updateActiveNavLink = () => {
+        const currentPath = window.location.pathname;
+        const navLinks = document.querySelectorAll('.nav-item');
+
+        navLinks.forEach(link => {
+            // Obtenemos la ruta del enlace (sin el dominio)
+            const linkPath = link.getAttribute('href');
+
+            // Verificamos si la ruta actual coincide con el href del enlace
+            // Usamos una comparación estricta o lógica de prefijos según necesites
+            if (currentPath === linkPath) {
+                link.classList.add('active');
+            } else {
+                link.classList.remove('active');
+            }
+        });
+    };
+
+    updateActiveNavLink();
+
     // Menú de Perfil
     const profileTrigger = document.getElementById('profile-menu-trigger');
     const profileDropdown = document.getElementById('profile-dropdown');

@@ -6,4 +6,4 @@ def is_staff_user(user):
 
 @user_passes_test(is_staff_user, login_url='login')
 def index(request):
-    return render(request, 'index.html')
+    return render(request, 'index_staff.html')
