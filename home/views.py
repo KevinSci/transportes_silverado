@@ -4,15 +4,15 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib import messages
 from users.models import CustomUser
 
-# Solo administrador o propietario pueden crear usuarios
-def can_create_users(user):
+# Solo los admins pueden acceder a las vistas
+def is_admin_user(user):
     return user.is_authenticated and user.role in ['administrador', 'propietario']
 
-@login_required
-def dashboard(request):
-    return render(request, 'dashboard.html')
+@user_passes_test(is_admin_user, login_url='login')
+def index_admin(request):
+    return render(request, 'index.html')
 
-@user_passes_test(can_create_users, login_url='home')
+@user_passes_test(is_admin_user, login_url='login')
 def create_user(request):
     if request.method == 'POST':
         u_name = request.POST.get('username')
@@ -30,12 +30,18 @@ def create_user(request):
                 phone_number=u_phone
             )
             messages.success(request, f"Usuario {u_name} creado con éxito.")
-            return redirect('home')
-    return render(request, 'create_users.html')
+            return redirect('index_admin')
+    return render(request, 'users.html')
 
 # Agregamos las funciones faltantes para que las URLs no rompan
+@user_passes_test(is_admin_user, login_url='login')
+def maintenance(request):
+    return render(request, 'maintenance.html')
+
+@user_passes_test(is_admin_user, login_url='login')
 def service(request):
     return render(request, 'service.html')
 
+@user_passes_test(is_admin_user, login_url='login')
 def plots(request):
     return render(request, 'plots.html')

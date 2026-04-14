@@ -12,20 +12,20 @@
     <div class="dashboard-container">
         <aside class="sidebar" id="sidebar">
             <div class="sidebar-header">
-                <a href="{% url 'home' %}" class="sidebar-logo-link">
+                <a href="{% url 'index_admin' %}" class="sidebar-logo-link">
                     <img src="{% static 'img/logo.svg' %}" alt="Transportes Silverado" class="sidebar-logo">
                 </a>
             </div>
             <nav class="sidebar-nav">
-                <a href="#" class="nav-item">
+                <a href="{% url "index_admin" %}" class="nav-item">
                     <i data-lucide="layout-dashboard"></i>
                     <span>Inicio</span>
                 </a>
-                <a href="{% url "create_user" %}" class="nav-item">
+                <a href="{% url "users" %}" class="nav-item">
                     <i data-lucide="users"></i>
                     <span>Usuarios</span>
                 </a>
-                <a href="#" class="nav-item active">
+                <a href="{% url "maintenance" %}" class="nav-item active">
                     <i data-lucide="wrench"></i>
                     <span>Mantenimiento</span>
                 </a>
