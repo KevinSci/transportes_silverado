@@ -1,15 +1,62 @@
-<div class="data-section no-roundness" style="max-width: 400px; margin: 50px auto;">
-    <h3>Iniciar Sesión</h3>
-    <form method="post">
-        {% csrf_token %}
-        <div style="margin-bottom: 15px;">
-            <label>Usuario:</label>
-            <input type="text" name="username" class="filter-select" style="width: 100%;" required>
+{% load static %}
+<!DOCTYPE html>
+<html lang="es-MX">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | Transportes Silverado</title>
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body class="login-body">
+    <div class="login-card no-roundness">
+        <div class="login-header">
+            <img src="{% static 'img/logo.svg' %}" alt="Logo Silverado" class="login-logo">
+            <h2>Acceso al Sistema</h2>
+            <p>Introduce tus credenciales para continuar</p>
         </div>
-        <div style="margin-bottom: 15px;">
-            <label>Contraseña:</label>
-            <input type="password" name="password" class="filter-select" style="width: 100%;" required>
+
+        {% if form.errors or messages %}
+        <div class="login-error no-roundness">
+            <i data-lucide="alert-circle" size="18"></i>
+            <span>Usuario o contraseña incorrectos.</span>
         </div>
-        <button type="submit" class="action-btn" style="width: 100%;">Ingresar</button>
-    </form>
-</div>
+        {% endif %}
+
+        <form method="post" class="login-form">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="id_username">Usuario</label>
+                <div class="input-container">
+                    <i data-lucide="user" class="input-icon"></i>
+                    <input type="text" name="username" id="id_username" class="filter-select no-roundness" placeholder="Ej. juan_perez" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="id_password">Contraseña</label>
+                <div class="input-container">
+                    <i data-lucide="lock" class="input-icon"></i>
+                    <input type="password" name="password" id="id_password" class="filter-select no-roundness" placeholder="••••••••" required>
+                    <button type="button" id="toggle-password" class="password-btn">
+                        <i data-lucide="eye" id="eye-icon"></i>
+                    </button>
+                </div>
+            </div>
+
+            <button type="submit" class="action-btn no-roundness login-submit">
+                <span>Ingresar al Panel</span>
+                <i data-lucide="chevron-right"></i>
+            </button>
+        </form>
+
+        <div class="login-footer">
+            <p>&copy; 2026 Transportes Silverado S.A. de C.V.</p>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="{% static 'js/login.js' %}"></script>
+</body>
+</html>

@@ -1,25 +1,33 @@
+/* =========================================
+   1. VARIABLES (Consolidadas)
+   ========================================= */
 :root {
-    --bg-color: #f4f7f6; /* Un gris muy claro y profesional */
+    /* Colores Base */
+    --bg-color: #f4f7f6;
     --sidebar-bg: #ffffff;
+    --border-color: #e0e0e0;
+    
+    /* Tipografía */
     --text-primary: #1a1a1a;
     --text-secondary: #5f6368;
-    --accent-color: #2b2b2b; /* Negro mate para un aspecto formal */
-    --border-color: #e0e0e0;
-    --card-shadow: 0 1px 3px rgba(0,0,0,0.05); /* Sombra muy sutil */
+    --text-active: #000000;
+    --text-muted: #666666;
+    
+    /* Acentos y Estados */
+    --accent-color: #2b2b2b;
+    --accent-line: #000000;
     --success-color: #2ecc71;
     --warning-color: #f39c12;
     --danger-color: #e74c3c;
-}
-:root {
+    
+    /* Dimensiones y Sombras */
     --sidebar-width: 260px;
-    --bg-main: #f4f7f6;
-    --sidebar-bg: #ffffff;
-    --border-color: #eeeeee;
-    --text-active: #000000;
-    --text-muted: #666666;
-    --accent-line: #000000;
+    --card-shadow: 0 1px 3px rgba(0,0,0,0.05);
 }
 
+/* =========================================
+   2. RESET Y LAYOUT BASE
+   ========================================= */
 * {
     margin: 0;
     padding: 0;
@@ -35,23 +43,42 @@ body {
 .dashboard-container {
     display: flex;
     min-height: 100vh;
+    overflow-x: hidden;
 }
 
-/* Sidebar - Diseño Compacto y Recto */
+/* =========================================
+   3. SIDEBAR
+   ========================================= */
 .sidebar {
     width: var(--sidebar-width);
     background: var(--sidebar-bg);
     border-right: 1px solid var(--border-color);
     display: flex;
     flex-direction: column;
+    flex-shrink: 0;
+    transition: transform 0.3s ease;
 }
 
 .sidebar-header {
-    padding: 30px 24px;
+    padding: 20px 24px;
     display: flex;
     align-items: center;
-    gap: 12px;
-    letter-spacing: 2px;
+    justify-content: center;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.sidebar-logo-link {
+    text-decoration: none;
+    display: block;
+    width: 100%;
+}
+
+.sidebar-logo {
+    max-width: 100%;
+    height: 80px; /* Tamaño ajustado para no romper el header */
+    display: block;
+    object-fit: contain;
+    margin: 0 auto;
 }
 
 .sidebar-nav {
@@ -70,14 +97,13 @@ body {
     font-weight: 500;
     transition: all 0.1s ease;
     border-left: 3px solid transparent;
-    gap: 16px; /* Espacio exacto entre icono y texto */
+    gap: 16px;
 }
 
-/* Iconos */
 .nav-item i {
     width: 18px;
     height: 18px;
-    stroke-width: 2px; /* Grosor constante para formalidad */
+    stroke-width: 2px;
 }
 
 .nav-item:hover {
@@ -95,62 +121,17 @@ body {
     color: var(--text-active);
 }
 
-/* Header */
-.topbar {
-    height: 65px;
-    background: #fff;
-    border-bottom: 1px solid var(--border-color);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 24px;
-}
-
-.menu-btn {
-    background: none;
-    border: none;
-    cursor: pointer;
-    color: var(--text-muted);
-}
-
-.user-info {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 0.85rem;
-    color: var(--text-muted);
-}
-
-/* static/css/base.css */
-.sidebar-header {
-    padding: 20px 24px; /* Ajustado para dar más espacio al logo */
-    display: flex;
-    align-items: center;
-    justify-content: center; /* Centra el logo en el sidebar */
-    border-bottom: 1px solid var(--border-color);
-}
-
-.sidebar-logo {
-    max-width: 100%;
-    height: 100px; /* Ajusta esta altura según prefieras */
-    display: block;
-    object-fit: contain;
-}
-
-.sidebar-logo-link {
-    text-decoration: none;
-    display: block;
-}
-
-/* Main Content */
+/* =========================================
+   4. MAIN CONTENT Y TOPBAR
+   ========================================= */
 .main-content {
     flex: 1;
     display: flex;
     flex-direction: column;
     width: 100%;
+    min-width: 0; /* Previene desbordamiento de grids internos */
 }
 
-/* Topbar - Profesional y Recta */
 .topbar {
     height: 70px;
     background-color: var(--sidebar-bg);
@@ -178,6 +159,8 @@ body {
     font-size: 1.4rem;
     cursor: pointer;
     color: var(--text-secondary);
+    display: flex;
+    align-items: center;
 }
 
 .topbar-right {
@@ -186,152 +169,17 @@ body {
     gap: 20px;
 }
 
-.action-btn {
-    background-color: transparent;
-    border: 1px solid var(--border-color);
-    color: var(--text-secondary);
-    padding: 10px 20px;
-    font-size: 0.85rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.2s;
-}
-
-.action-btn:hover {
-    background-color: #f8f9fa;
-    color: var(--text-primary);
-    border-color: var(--text-secondary);
-}
-
-.user-profile {
-    font-size: 0.9rem;
-    color: var(--text-secondary);
-}
-
-/* Content Area */
-.content-area {
-    padding: 30px 24px;
-}
-
-/* Filtros y Elementos Formales */
-.filters-row {
-    display: flex;
-    gap: 12px;
-    margin-bottom: 24px;
-}
-
-.filter-select {
-    padding: 10px 16px;
-    border: 1px solid var(--border-color);
-    background-color: #ffffff;
-    font-size: 0.85rem;
-    color: var(--text-secondary);
-    appearance: none; /* Eliminar el estilo por defecto del navegador */
-    -webkit-appearance: none;
-    cursor: pointer;
-}
-
-/* Metrics Grid - Diseño Recto */
-.metrics-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 24px;
-    margin-bottom: 24px;
-}
-
-.metric-card {
-    background: #ffffff;
-    padding: 24px;
-    box-shadow: var(--card-shadow);
-    border: 1px solid var(--border-color);
-}
-
-.metric-card h3 {
-    font-size: 0.8rem;
-    color: var(--text-secondary);
-    margin-bottom: 8px;
-    font-weight: 500;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-.metric-value {
-    font-size: 2rem;
-    font-weight: 600;
-}
-
-.metric-total {
-    font-size: 1rem;
-    color: var(--text-secondary);
-    font-weight: 400;
-}
-
-/* Sección de Datos y Tablas */
-.data-section {
-    background: #ffffff;
-    padding: 24px;
-    box-shadow: var(--card-shadow);
-    border: 1px solid var(--border-color);
-    margin-bottom: 24px;
-}
-
-.data-section h3 {
-    font-size: 1rem;
-    margin-bottom: 16px;
-    font-weight: 600;
-}
-
-.placeholder-box {
-    padding: 40px;
-    text-align: center;
-    border: 1px solid var(--border-color);
-    color: var(--text-secondary);
-    background-color: #fcfcfc;
-    font-size: 0.9rem;
-}
-
-.chart-container .placeholder-box {
-    height: 300px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.data-tables-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-    gap: 24px;
-}
-
-.data-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 0.9rem;
-}
-
-.data-table thead th {
-    text-align: left;
-    padding: 12px 16px;
-    background-color: #f8f9fa;
-    border-bottom: 2px solid var(--border-color);
-    color: var(--text-secondary);
-    font-weight: 500;
-}
-
-.data-table tbody td {
-    padding: 12px 16px;
-    border-bottom: 1px solid var(--border-color);
-    color: var(--text-primary);
-}
-
-/* Clases de Utilidad */
-.no-roundness {
-    border-radius: 0 !important;
-}
-
-/* static/css/base.css */
+/* Menú de Usuario */
 .user-menu-container {
     position: relative;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
 }
 
 .dropdown-menu {
@@ -375,16 +223,190 @@ body {
     margin: 4px 0;
 }
 
-/* Responsive */
-@media (max-width: 768px) {
-    .sidebar {
-        position: absolute;
-        height: 100%;
-        z-index: 100;
-        transform: translateX(-100%);
+/* =========================================
+   5. COMPONENTES Y CONTENIDO
+   ========================================= */
+.content-area {
+    padding: 30px 24px;
+    flex: 1;
+}
+
+.action-btn {
+    background-color: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--text-secondary);
+    padding: 10px 20px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.action-btn:hover {
+    background-color: #f8f9fa;
+    color: var(--text-primary);
+    border-color: var(--text-secondary);
+}
+
+/* Filtros */
+.filters-row {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+}
+
+.filter-select {
+    padding: 10px 16px;
+    border: 1px solid var(--border-color);
+    background-color: #ffffff;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    appearance: none;
+    -webkit-appearance: none;
+    cursor: pointer;
+    flex: 1;
+    min-width: 150px;
+}
+
+/* Grids y Tarjetas */
+.metrics-grid {
+    display: grid;
+    /* Ajustado para no romper en pantallas muy delgadas */
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr));
+    gap: 24px;
+    margin-bottom: 24px;
+}
+
+.metric-card {
+    background: #ffffff;
+    padding: 24px;
+    box-shadow: var(--card-shadow);
+    border: 1px solid var(--border-color);
+}
+
+.metric-card h3 {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.metric-value {
+    font-size: 2rem;
+    font-weight: 600;
+}
+
+/* Secciones de Datos y Tablas */
+.data-section {
+    background: #ffffff;
+    padding: 24px;
+    box-shadow: var(--card-shadow);
+    border: 1px solid var(--border-color);
+    margin-bottom: 24px;
+    overflow-x: auto; /* Permite scroll interno si la tabla es ancha */
+}
+
+.data-section h3 {
+    font-size: 1rem;
+    margin-bottom: 16px;
+    font-weight: 600;
+}
+
+.data-tables-grid {
+    display: grid;
+    /* Ajustado para no romper celulares */
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 350px), 1fr));
+    gap: 24px;
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+    min-width: 400px; /* Obliga a la tabla a mantener formato y hacer scroll */
+}
+
+.data-table thead th {
+    text-align: left;
+    padding: 12px 16px;
+    background-color: #f8f9fa;
+    border-bottom: 2px solid var(--border-color);
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+.data-table tbody td {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border-color);
+    color: var(--text-primary);
+}
+
+/* Extras */
+.placeholder-box {
+    padding: 40px;
+    text-align: center;
+    border: 1px solid var(--border-color);
+    color: var(--text-secondary);
+    background-color: #fcfcfc;
+    font-size: 0.9rem;
+}
+
+.chart-container .placeholder-box {
+    height: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.no-roundness {
+    border-radius: 0 !important;
+}
+
+/* =========================================
+   6. RESPONSIVE DESIGN (Tablets y Móviles)
+   ========================================= */
+
+/* Tablets (1024px e inferiores) */
+@media (max-width: 1024px) {
+    .content-area {
+        padding: 20px 16px;
     }
-    .sidebar.active {
-        transform: translateX(0);
+    .metrics-grid {
+        gap: 16px;
     }
 }
 
+/* Teléfonos Móviles (768px e inferiores) */
+@media (max-width: 768px) {
+    .sidebar {
+        position: fixed; /* Fixed evita que desaparezca al hacer scroll */
+        height: 100vh;
+        z-index: 1000;
+        transform: translateX(-100%);
+        box-shadow: 4px 0 10px rgba(0,0,0,0.1); /* Sombra para resaltar sobre el fondo */
+    }
+    
+    .sidebar.active {
+        transform: translateX(0);
+    }
+    
+    .topbar {
+        padding: 0 16px;
+    }
+    
+    .filters-row {
+        flex-direction: column; /* Apila los filtros para tocarlos fácil */
+        gap: 8px;
+    }
+    
+    .filter-select {
+        width: 100%; /* Toma todo el ancho en móviles */
+    }
+    
+    .data-section {
+        padding: 16px;
+    }
+}
