@@ -1,0 +1,35 @@
+/* static/css/forms.css */
+
+.form-container-small {
+    max-width: 500px;
+}
+
+.form-group-margin {
+    margin-bottom: 15px;
+}
+
+.form-label-block {
+    display: block;
+    margin-bottom: 8px;
+}
+
+.full-width {
+    width: 100%;
+}
+
+.error-list {
+    color: var(--danger-color);
+    margin-bottom: 15px;
+    list-style: none;
+    padding-left: 0;
+}
+
+.messages-container {
+    margin-bottom: 20px;
+}
+
+.success-message {
+    border-color: var(--success-color) !important;
+    color: var(--success-color) !important;
+    background-color: #f0fff4;
+}

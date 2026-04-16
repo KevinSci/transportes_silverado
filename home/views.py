@@ -26,8 +26,6 @@ def show_users(request: HttpRequest):
     page_obj = paginator.get_page(page_number)
     return render(request, 'users/users.html', {'page_obj': page_obj, 'search_query': search_query})
 
-
-
 @user_passes_test(is_admin_user, login_url='login')
 def create_user(request: HttpRequest):
     if request.method == 'POST':
@@ -40,8 +38,14 @@ def create_user(request: HttpRequest):
     return render(request, 'users/create_user.html')
 
 
-def delete_users(request: HttpRequest):
-    pass
+def delete_users(request: HttpRequest, user_id: int):
+    if request.method == 'POST':
+        try:
+            users.delete_users_controller(user_id, request.user)
+            messages.success(request, f"Usuario eliminado con éxito.")
+        except Exception as e:
+            messages.error(request, e.message)
+    return redirect('users')
 
 def edit_users(request: HttpRequest):
     pass

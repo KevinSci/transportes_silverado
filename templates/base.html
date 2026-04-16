@@ -6,8 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Panel de Control{% endblock %}</title>
     <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <link rel="stylesheet" href="{% static 'css/forms.css' %}">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{% static 'css/base.css' %}">
     {% block extra_css %}{% endblock %}
 </head>
 <body>
@@ -19,15 +19,15 @@
                 </a>
             </div>
             <nav class="sidebar-nav">
-                <a href="{% url "index_admin" %}" class="nav-item">
+                <a href="{% url 'index_admin' %}" class="nav-item">
                     <i data-lucide="layout-dashboard"></i>
                     <span>Inicio</span>
                 </a>
-                <a href="{% url "users" %}" class="nav-item">
+                <a href="{% url 'users' %}" class="nav-item">
                     <i data-lucide="users"></i>
                     <span>Usuarios</span>
                 </a>
-                <a href="{% url "maintenance" %}" class="nav-item">
+                <a href="{% url 'maintenance' %}" class="nav-item">
                     <i data-lucide="wrench"></i>
                     <span>Mantenimiento</span>
                 </a>
@@ -45,30 +45,41 @@
         <main class="main-content">
             <header class="topbar">
                 <button id="menu-toggle" class="menu-btn"><i data-lucide="menu"></i></button>
-                    <div class="topbar-right">
-                        <div class="user-menu-container">
-                            <div class="user-info" id="profile-menu-trigger" style="cursor: pointer;">
-                                <span>{{ request.user.username|default:"Admin" }}</span>
-                                <i data-lucide="user" class="user-icon"></i>
-                            </div>
-                            
-                            <div class="dropdown-menu no-roundness" id="profile-dropdown" style="display: none;">
-                                <a href="#" class="dropdown-item">
-                                    <i data-lucide="settings" size="16"></i> Mi Perfil
-                                </a>
-                                <hr class="dropdown-divider">
-                                <form action="{% url 'logout' %}" method="post" style="margin: 0;">
-                                    {% csrf_token %}
-                                    <button type="submit" class="dropdown-item logout-btn">
-                                        <i data-lucide="log-out" size="16"></i> Cerrar Sesión
-                                    </button>
-                                </form>
-                            </div>
+                <div class="topbar-right">
+                    <div class="user-menu-container">
+                        <div class="user-info user-info-trigger" id="profile-menu-trigger">
+                            <span>{{ request.user.username|default:"Admin" }}</span>
+                            <i data-lucide="user" class="user-icon"></i>
+                        </div>
+                        
+                        <div class="dropdown-menu no-roundness dropdown-hidden" id="profile-dropdown">
+                            <a href="#" class="dropdown-item">
+                                <i data-lucide="settings" class="icon-small" size="16"></i> Mi Perfil
+                            </a>
+                            <hr class="dropdown-divider">
+                            <form action="{% url 'logout' %}" method="post" class="dropdown-form">
+                                {% csrf_token %}
+                                <button type="submit" class="dropdown-item logout-btn">
+                                    <i data-lucide="log-out" class="icon-small" size="16"></i> Cerrar Sesión
+                                </button>
+                            </form>
                         </div>
                     </div>
+                </div>
             </header>
 
             <div class="content-area">
+                {% if messages %}
+                    <div class="messages-container">
+                        {% for message in messages %}
+                            <div class="login-error no-roundness {% if message.tags == 'success' %}success-message{% endif %}">
+                                <i data-lucide="{% if message.tags == 'success' %}check-circle{% else %}alert-circle{% endif %}" size="18"></i>
+                                <span>{{ message }}</span>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
                 {% block content %}{% endblock %}
             </div>
         </main>

@@ -24,3 +24,17 @@ def show_users_controller(search_query: str = None):
             Q(username__icontains=search_query)
         )
     return users
+
+def delete_users_controller(user_id: int, current_user: CustomUser):
+    try:
+        user_to_delete = CustomUser.objects.get(id=user_id)
+        if user_to_delete == current_user:
+             raise ValidationError("Por seguridad, no puedes eliminar tu propia cuenta activa.")
+        user_to_delete.delete()
+        return True
+    except CustomUser.DoesNotExist:
+        raise ValidationError("El usuario no existe.")
+
+
+def edit_users_controller():
+    pass
