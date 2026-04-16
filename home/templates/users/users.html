@@ -25,6 +25,10 @@
                 <a href="{% url 'users' %}" class="action-btn btn-clear-search">Limpiar</a>
             {% endif %}
         </form>
+        <a href="{% url 'create_user' %}" class="action-btn">
+            <i data-lucide="user-plus"></i>
+            <span>Nuevo Usuario</span>
+        </a>
     </div>
 
     <div class="table-container">

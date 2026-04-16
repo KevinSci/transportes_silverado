@@ -40,6 +40,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const profileDropdown = document.getElementById('profile-dropdown');
 
     if (profileTrigger && profileDropdown) {
+        profileDropdown.classList.add('dropdown-hidden');
+
         profileTrigger.addEventListener('click', (e) => {
             e.stopPropagation();
             // Alterna la clase dropdown-hidden para mostrar/ocultar
