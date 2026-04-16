@@ -14,7 +14,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const sidebar = document.getElementById('sidebar');
     if (menuToggle && sidebar) {
         menuToggle.addEventListener('click', () => {
-            // Verificación más robusta del estado actual
             const display = window.getComputedStyle(sidebar).display;
             sidebar.style.display = (display === 'none') ? 'flex' : 'none';
         });
@@ -25,11 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const navLinks = document.querySelectorAll('.nav-item');
 
         navLinks.forEach(link => {
-            // Obtenemos la ruta del enlace (sin el dominio)
             const linkPath = link.getAttribute('href');
-
-            // Verificamos si la ruta actual coincide con el href del enlace
-            // Usamos una comparación estricta o lógica de prefijos según necesites
             if (currentPath === linkPath) {
                 link.classList.add('active');
             } else {
@@ -47,14 +42,14 @@ document.addEventListener('DOMContentLoaded', () => {
     if (profileTrigger && profileDropdown) {
         profileTrigger.addEventListener('click', (e) => {
             e.stopPropagation();
-            const isHidden = profileDropdown.style.display === 'none' || profileDropdown.style.display === '';
-            profileDropdown.style.display = isHidden ? 'block' : 'none';
+            // Alterna la clase dropdown-hidden para mostrar/ocultar
+            profileDropdown.classList.toggle('dropdown-hidden');
         });
 
-        // Cerrar al hacer clic fuera
+        // Cerrar al hacer clic fuera del menú
         document.addEventListener('click', (e) => {
             if (!profileDropdown.contains(e.target) && !profileTrigger.contains(e.target)) {
-                profileDropdown.style.display = 'none';
+                profileDropdown.classList.add('dropdown-hidden');
             }
         });
     }

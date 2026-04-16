@@ -72,7 +72,7 @@
                 {% if messages %}
                     <div class="messages-container">
                         {% for message in messages %}
-                            <div class="login-error no-roundness {% if message.tags == 'success' %}success-message{% endif %}">
+                            <div class="alert-box no-roundness {% if message.tags == 'success' %}success-message{% endif %}">
                                 <i data-lucide="{% if message.tags == 'success' %}check-circle{% else %}alert-circle{% endif %}" size="18"></i>
                                 <span>{{ message }}</span>
                             </div>

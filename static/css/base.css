@@ -364,24 +364,7 @@ body {
 .no-roundness {
     border-radius: 0 !important;
 }
-/* Agregar al final de static/css/base.css */
 
-.user-info-trigger {
-    cursor: pointer;
-}
-
-.dropdown-hidden {
-    display: none;
-}
-
-.dropdown-form {
-    margin: 0;
-}
-
-.icon-small {
-    vertical-align: middle;
-    margin-right: 5px;
-}
 /* =========================================
    6. RESPONSIVE DESIGN (Tablets y Móviles)
    ========================================= */
@@ -426,4 +409,49 @@ body {
     .data-section {
         padding: 16px;
     }
+}
+
+/* =========================================
+   7. UTILIDADES (Menús, Alertas, etc.)
+   ========================================= */
+
+.user-info-trigger {
+    cursor: pointer;
+}
+
+/* Ocultar menú por defecto y permitir toggle con JS */
+.dropdown-hidden {
+    display: none !important;
+}
+
+.dropdown-form {
+    margin: 0;
+}
+
+.icon-small {
+    vertical-align: middle;
+    margin-right: 5px;
+}
+
+/* Componente Global de Alerta (antes .login-error) */
+.alert-box {
+    background-color: #fff5f5;
+    border: 1px solid var(--danger-color);
+    color: var(--danger-color);
+    padding: 12px;
+    margin-bottom: 20px;
+    font-size: 0.85rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.alert-box i {
+    flex-shrink: 0;
+}
+
+.success-message {
+    background-color: #f0fff4 !important;
+    border-color: var(--success-color) !important;
+    color: var(--success-color) !important;
 }

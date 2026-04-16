@@ -34,3 +34,19 @@
     color: white !important;
     border-color: var(--accent-line) !important;
 }
+
+.btn-danger-outline {
+    color: var(--danger-color);
+    border-color: var(--danger-color);
+}
+
+.btn-danger-outline:hover {
+    background-color: var(--danger-color);
+    color: white;
+    border-color: var(--danger-color);
+}
+
+.delete-form {
+    margin: 0;
+    display: inline-block;
+}

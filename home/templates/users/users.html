@@ -35,7 +35,8 @@
                     <th>Rol</th>
                     <th>Teléfono</th>
                     <th>Registro</th>
-                    <th>Acciones</th> </tr>
+                    <th>Acciones</th>
+                </tr>
             </thead>
             <tbody>
                 {% for usuario in page_obj %}
@@ -45,16 +46,19 @@
                     <td>{{ usuario.phone_number|default:"-" }}</td>
                     <td>{{ usuario.date_joined|date:"d/m/Y" }}</td>
                     <td>
-                        <form action="{% url 'delete_user' usuario.id %}" method="post" 
-                            onsubmit="return confirm('¿Estás seguro de eliminar a este usuario? Esta acción no se puede deshacer.');">
+                        <form action="{% url 'delete_user' usuario.id %}" method="post" class="delete-form"
+                              onsubmit="return confirm('¿Estás seguro de eliminar a este usuario? Esta acción no se puede deshacer.');">
                             {% csrf_token %}
-                            <button type="submit" class="action-btn" style="color: var(--danger-color); border-color: var(--danger-color);">
+                            <button type="submit" class="action-btn btn-danger-outline">
                                 <i data-lucide="trash-2"></i> Eliminar
                             </button>
                         </form>
                     </td>
                 </tr>
                 {% empty %}
+                <tr>
+                    <td colspan="5" class="placeholder-box">No se encontraron usuarios que coincidan con la búsqueda.</td>
+                </tr>
                 {% endfor %}
             </tbody>
         </table>
