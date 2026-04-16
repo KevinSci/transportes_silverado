@@ -1,8 +1,11 @@
 # home/views.py
 from django.shortcuts import render, redirect
-from django.contrib.auth.decorators import login_required, user_passes_test
+from django.contrib.auth.decorators import user_passes_test
+from django.http import HttpRequest
 from django.contrib import messages
-from users.models import CustomUser
+from django.core.paginator import Paginator
+from .controllers import users
+
 
 # Solo los admins pueden acceder a las vistas
 def is_admin_user(user):
@@ -12,28 +15,37 @@ def is_admin_user(user):
 def index_admin(request):
     return render(request, 'index.html')
 
+# =========== Usuarios =========== #
+
 @user_passes_test(is_admin_user, login_url='login')
-def create_user(request):
+def show_users(request: HttpRequest):
+    search_query = request.GET.get('q', '')
+    page_number = request.GET.get('page', 1)
+    all_users = users.show_users_controller(search_query)
+    paginator = Paginator(all_users, 10)
+    page_obj = paginator.get_page(page_number)
+    return render(request, 'users/users.html', {'users': page_obj, 'search_query': search_query})
+
+
+
+@user_passes_test(is_admin_user, login_url='login')
+def create_user(request: HttpRequest):
     if request.method == 'POST':
-        u_name = request.POST.get('username')
-        u_pass = request.POST.get('password')
-        u_role = request.POST.get('role')
-        u_phone = request.POST.get('phone')
+        try:
+            users.create_user_controller(request.POST)
+            messages.success(request, f"Usuario creado con éxito.")
+            return redirect('users')
+        except Exception as e:
+            messages.error(request, e.message)
+    return render(request, 'users/create_user.html')
 
-        if CustomUser.objects.filter(username=u_name).exists():
-            messages.error(request, "El nombre de usuario ya existe.")
-        else:
-            CustomUser.objects.create_user(
-                username=u_name, 
-                password=u_pass, 
-                role=u_role, 
-                phone_number=u_phone
-            )
-            messages.success(request, f"Usuario {u_name} creado con éxito.")
-            return redirect('index_admin')
-    return render(request, 'users.html')
 
-# Agregamos las funciones faltantes para que las URLs no rompan
+def delete_users(request: HttpRequest):
+    pass
+
+def edit_users(request: HttpRequest):
+    pass
+
 @user_passes_test(is_admin_user, login_url='login')
 def maintenance(request):
     return render(request, 'maintenance.html')
