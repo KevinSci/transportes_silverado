@@ -21,8 +21,6 @@ def show_users_controller(search_query: str = None):
     users = CustomUser.objects.all().order_by('-date_joined')
     if search_query:
         users = users.filter(
-            Q(username__icontains=search_query) |
-            Q(role__icontains=search_query) |
-            Q(phone_number__icontains=search_query)
+            Q(username__icontains=search_query)
         )
     return users

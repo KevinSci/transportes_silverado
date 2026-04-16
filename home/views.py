@@ -24,7 +24,7 @@ def show_users(request: HttpRequest):
     all_users = users.show_users_controller(search_query)
     paginator = Paginator(all_users, 10)
     page_obj = paginator.get_page(page_number)
-    return render(request, 'users/users.html', {'users': page_obj, 'search_query': search_query})
+    return render(request, 'users/users.html', {'page_obj': page_obj, 'search_query': search_query})
 
 
 

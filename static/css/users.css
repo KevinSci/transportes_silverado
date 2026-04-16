@@ -1,0 +1,36 @@
+/* static/css/users.css */
+
+/* Contenedor de búsqueda responsivo */
+.users-search-form {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+}
+
+@media (max-width: 768px) {
+    .users-search-form {
+        flex-direction: column;
+    }
+}
+
+/* Ajustes para la tabla responsiva */
+.table-container {
+    width: 100%;
+    overflow-x: auto; /* Permite scroll horizontal en móviles */
+    margin-top: 20px;
+}
+
+/* Estilos de Paginación */
+.pagination-container {
+    margin-top: 25px;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.page-link-active {
+    background-color: var(--accent-color) !important;
+    color: white !important;
+    border-color: var(--accent-line) !important;
+}
