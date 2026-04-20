@@ -240,12 +240,27 @@ body {
     font-weight: 500;
     cursor: pointer;
     transition: all 0.2s;
+    
+    /* Alineación de icono y texto */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    text-decoration: none; /* Elimina el subrayado en enlaces <a> */
+    line-height: normal;
+    white-space: nowrap; /* Evita que el texto se parta en dos líneas */
 }
 
 .action-btn:hover {
     background-color: #f8f9fa;
     color: var(--text-primary);
     border-color: var(--text-secondary);
+}
+
+.action-btn i {
+    width: 16px;
+    height: 16px;
+    stroke-width: 2.5px;
 }
 
 /* Filtros */
