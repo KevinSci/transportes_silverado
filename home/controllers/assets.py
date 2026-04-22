@@ -46,8 +46,8 @@ def show_assets_controller(search_query: str = None):
         )
     return assets
 
-def delete_assets_controller():
+def delete_asset_controller():
     pass
 
-def edit_assets_controller():
+def edit_asset_controller():
     pass

@@ -67,10 +67,10 @@ def create_asset(request: HttpRequest):
             messages.error(request, e.message)
     return render(request, 'assets/create_asset.html')
 
-def delete_assets(request: HttpRequest):
+def delete_asset(request: HttpRequest):
     pass
 
-def edit_assets(request: HttpRequest):
+def edit_asset(request: HttpRequest):
     pass
 
 
