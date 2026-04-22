@@ -67,11 +67,32 @@ def create_asset(request: HttpRequest):
             messages.error(request, e.message)
     return render(request, 'assets/create_asset.html')
 
-def delete_asset(request: HttpRequest):
-    pass
+def delete_asset(request: HttpRequest, asset_id: int):
+    if request.method == 'POST':
+        try:
+            assets.delete_asset_controller(asset_id)
+            messages.success(request, "Activo eliminado con éxito.")
+        except Exception as e:
+            messages.error(request, getattr(e, 'message', str(e)))
+    return redirect('assets')
 
-def edit_asset(request: HttpRequest):
-    pass
+def edit_asset(request: HttpRequest, asset_id: int):
+    try:
+        # Recuperamos el activo para pre-llenar el formulario
+        asset = assets.Asset.objects.get(id=asset_id)
+    except assets.Asset.DoesNotExist:
+        messages.error(request, "El activo no existe.")
+        return redirect('assets')
+
+    if request.method == 'POST':
+        try:
+            assets.edit_asset_controller(asset_id, request.POST)
+            messages.success(request, "Activo actualizado correctamente.")
+            return redirect('assets')
+        except Exception as e:
+            messages.error(request, getattr(e, 'message', str(e)))
+            
+    return render(request, 'assets/edit_asset.html', {'asset': asset})
 
 
 

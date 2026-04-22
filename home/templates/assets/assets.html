@@ -36,6 +36,7 @@
                     <th>Identificador</th>
                     <th>Información Adicional</th>
                     <th>Registro</th>
+                    <th>Acciones</th> </tr>
                 </tr>
             </thead>
             <tbody>
@@ -58,6 +59,20 @@
                         {% endif %}
                     </td>
                     <td>{{ asset.created_at|date:"d/m/Y" }}</td>
+                    <td>
+                        <div style="display: flex; gap: 8px;">
+                            <a href="{% url 'edit_asset' asset.id %}" class="action-btn">
+                                <i data-lucide="edit"></i> Editar
+                            </a>
+                            <form action="{% url 'delete_asset' asset.id %}" method="post" class="delete-form"
+                                  onsubmit="return confirm('¿Estás seguro de eliminar este activo? Esta acción no se puede deshacer.');">
+                                {% csrf_token %}
+                                <button type="submit" class="action-btn btn-danger-outline">
+                                    <i data-lucide="trash-2"></i> Eliminar
+                                </button>
+                            </form>
+                        </div>
+                    </td>
                 </tr>
                 {% empty %}
                 <tr>

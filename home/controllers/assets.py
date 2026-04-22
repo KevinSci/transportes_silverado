@@ -46,8 +46,42 @@ def show_assets_controller(search_query: str = None):
         )
     return assets
 
-def delete_asset_controller():
-    pass
+def delete_asset_controller(asset_id: int):
+    try:
+        asset_to_delete = Asset.objects.get(id=asset_id)
+        asset_to_delete.delete()
+        return True
+    except Asset.DoesNotExist:
+        raise ValidationError("El activo no existe.")
 
-def edit_asset_controller():
-    pass
+def edit_asset_controller(asset_id: int, data):
+    try:
+        asset = Asset.objects.get(id=asset_id)
+        
+        # Validar si el número económico cambió y si el nuevo ya existe
+        number = data.get('number')
+        if number and number != asset.number:
+            if Asset.objects.filter(number=number).exists():
+                raise ValidationError("El número de activo ya existe en el sistema.")
+            asset.number = number
+
+        asset.observations = data.get('observations')
+
+        # Actualizamos solo los datos correspondientes a su tipo
+        if asset.asset_type == 'tracto':
+            asset.brand = data.get('brand')
+            asset.model_name = data.get('model_name')
+            asset.transmission = data.get('transmission')
+            asset.operator = data.get('operator')
+            asset.operator_number = data.get('operator_number')
+            asset.engine = data.get('engine')
+        elif asset.asset_type == 'caja':
+            asset.plates = data.get('plates')
+            asset.dimensions = data.get('dimensions')
+            asset.state = data.get('state')
+            asset.condition = data.get('condition')
+
+        asset.save()
+        return asset
+    except Asset.DoesNotExist:
+        raise ValidationError("El activo no existe.")
