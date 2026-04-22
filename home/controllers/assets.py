@@ -45,3 +45,9 @@ def show_assets_controller(search_query: str = None):
             Q(plates__icontains=search_query)
         )
     return assets
+
+def delete_assets_controller():
+    pass
+
+def edit_assets_controller():
+    pass
