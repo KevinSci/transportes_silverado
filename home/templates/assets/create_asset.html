@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Nuevo Activo | Silverado{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/assets.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="data-section no-roundness">
+    <div class="section-header">
+        <h3><i data-lucide="plus-circle"></i> Registrar Nuevo Activo</h3>
+        <a href="{% url 'assets' %}" class="action-btn">
+            <i data-lucide="arrow-left"></i> Volver al listado
+        </a>
+    </div>
+
+    <form method="post" class="asset-form" id="create-asset-form">
+        {% csrf_token %}
+        
+        <div class="form-grid">
+            <div class="form-group">
+                <label for="asset_type">Tipo de Activo</label>
+                <select name="asset_type" id="asset_type" class="filter-select no-roundness" required>
+                    <option value="" disabled selected>Selecciona una opción...</option>
+                    <option value="tracto">Tracto (Camión)</option>
+                    <option value="caja">Caja / Remolque</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="number">Número Económico</label>
+                <input type="text" name="number" id="number" class="filter-select no-roundness" 
+                       placeholder="Ej. T-105" required>
+            </div>
+        </div>
+
+        <div id="section-tracto" class="asset-specific-fields hidden">
+            <h4 class="form-subtitle">Detalles del Tracto</h4>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>Marca</label>
+                    <input type="text" name="brand" class="filter-select no-roundness">
+                </div>
+                <div class="form-group">
+                    <label>Modelo</label>
+                    <input type="text" name="model_name" class="filter-select no-roundness">
+                </div>
+                <div class="form-group">
+                    <label>Transmisión</label>
+                    <input type="text" name="transmission" class="filter-select no-roundness">
+                </div>
+                <div class="form-group">
+                    <label>Motor</label>
+                    <input type="text" name="engine" class="filter-select no-roundness">
+                </div>
+                <div class="form-group">
+                    <label>Operador Asignado</label>
+                    <input type="text" name="operator" class="filter-select no-roundness">
+                </div>
+                <div class="form-group">
+                    <label>Número de Operador</label>
+                    <input type="text" name="operator_number" class="filter-select no-roundness">
+                </div>
+            </div>
+        </div>
+
+        <div id="section-caja" class="asset-specific-fields hidden">
+            <h4 class="form-subtitle">Detalles de la Caja</h4>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>Placas</label>
+                    <input type="text" name="plates" class="filter-select no-roundness">
+                </div>
+                <div class="form-group">
+                    <label>Dimensiones</label>
+                    <input type="text" name="dimensions" class="filter-select no-roundness" placeholder="Ej. 53 ft">
+                </div>
+                <div class="form-group">
+                    <label>Estado / Ubicación</label>
+                    <input type="text" name="state" class="filter-select no-roundness">
+                </div>
+                <div class="form-group">
+                    <label>Condición Física</label>
+                    <input type="text" name="condition" class="filter-select no-roundness">
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group full-width" style="margin-top: 20px;">
+            <label for="observations">Observaciones</label>
+            <textarea name="observations" id="observations" rows="3" 
+                      class="filter-select no-roundness" style="height: auto;"></textarea>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="action-btn login-submit no-roundness">
+                <i data-lucide="save"></i> Guardar Activo
+            </button>
+        </div>
+    </form>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/assets_form.js' %}"></script>
+{% endblock %}

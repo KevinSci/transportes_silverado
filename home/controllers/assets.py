@@ -34,5 +34,14 @@ def create_asset_controller(data):
 
     return Asset.objects.create(**asset_params)
 
-def show_assets_controller(data):
-    pass
+def show_assets_controller(search_query: str = None):
+    assets = Asset.objects.all().order_by('-created_at')
+    
+    if search_query:
+        assets = assets.filter(
+            Q(number__icontains=search_query) |
+            Q(brand__icontains=search_query) |
+            Q(operator__icontains=search_query) |
+            Q(plates__icontains=search_query)
+        )
+    return assets

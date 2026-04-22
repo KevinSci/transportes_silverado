@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Gestión de Activos{% endblock %}
+
+{% block content %}
+<div class="data-section no-roundness">
+    <h3>Inventario de Activos (Tractos y Cajas)</h3>
+
+    <div class="filters-row">
+        <form method="get" class="users-search-form">
+            <input type="text" name="q" value="{{ search_query }}" 
+                   placeholder="Buscar por económico, marca o placas..." 
+                   class="filter-select">
+            
+            <button type="submit" class="action-btn">
+                <i data-lucide="search"></i> Buscar
+            </button>
+
+            {% if search_query %}
+                <a href="{% url 'assets' %}" class="action-btn">Limpiar</a>
+            {% endif %}
+        </form>
+        <a href="{% url 'create_asset' %}" class="action-btn">
+            <i data-lucide="plus-circle"></i>
+            <span>Nuevo Activo</span>
+        </a>
+    </div>
+
+    <div class="table-container">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Tipo</th>
+                    <th>N. Económico</th>
+                    <th>Identificador</th>
+                    <th>Información Adicional</th>
+                    <th>Registro</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for asset in page_obj %}
+                <tr>
+                    <td>{{ asset.get_asset_type_display }}</td>
+                    <td><strong>{{ asset.number }}</strong></td>
+                    <td>
+                        {% if asset.asset_type == 'tracto' %}
+                            {{ asset.brand|default:"-" }} {{ asset.model_name|default:"" }}
+                        {% else %}
+                            Placas: {{ asset.plates|default:"-" }}
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if asset.asset_type == 'tracto' %}
+                            Operador: {{ asset.operator|default:"Sin asignar" }}
+                        {% else %}
+                            {{ asset.dimensions|default:"Sin dimensiones" }}
+                        {% endif %}
+                    </td>
+                    <td>{{ asset.created_at|date:"d/m/Y" }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5" class="placeholder-box">No se encontraron activos registrados.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    {% if page_obj.paginator.num_pages > 1 %}
+    <div class="pagination-container">
+        {% if page_obj.has_previous %}
+            <a href="?page={{ page_obj.previous_page_number }}{% if search_query %}&q={{ search_query }}{% endif %}" class="action-btn">Anterior</a>
+        {% endif %}
+
+        <span class="action-btn page-link-active">
+            {{ page_obj.number }} / {{ page_obj.paginator.num_pages }}
+        </span>
+
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}{% if search_query %}&q={{ search_query }}{% endif %}" class="action-btn">Siguiente</a>
+        {% endif %}
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

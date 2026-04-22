@@ -46,7 +46,16 @@ def edit_users(request: HttpRequest):
 # =========== Activos =========== #
 
 def show_assets(request: HttpRequest):
-    pass
+    search_query = request.GET.get('q', '')
+    page_number = request.GET.get('page', 1)
+    all_assets = assets.show_assets_controller(search_query)
+    paginator = Paginator(all_assets, 10)
+    page_obj = paginator.get_page(page_number)
+    
+    return render(request, 'assets/assets.html', {
+        'page_obj': page_obj, 
+        'search_query': search_query
+    })
 
 def create_asset(request: HttpRequest):
     if request.method == 'POST':
