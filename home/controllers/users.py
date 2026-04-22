@@ -3,19 +3,20 @@ from users.models import CustomUser
 from django.db.models import Q
 
 def create_user_controller(data):
-        username = data.get('username')
-        role = data.get('role')
-        phone =data.get('phone')
-        password = data.get('password')
+    username = data.get('username')
+    role = data.get('role')
+    phone = data.get('phone')
+    password = data.get('password')
 
-        if CustomUser.objects.filter(username=username).exists():
-            raise ValidationError("El nombre de usuario ya existe.")
-        return CustomUser.objects.create_user(
-                    username=username, 
-                    password=password, 
-                    role=role, 
-                    phone_number=phone
-                )
+    if CustomUser.objects.filter(username=username).exists():
+        raise ValidationError("El nombre de usuario ya existe.")
+
+    return CustomUser.objects.create_user(
+        username=username,
+        password=password,
+        role=role,
+        phone_number=phone
+    )
 
 def show_users_controller(search_query: str = None):
     users = CustomUser.objects.all().order_by('-date_joined')
@@ -34,7 +35,6 @@ def delete_users_controller(user_id: int, current_user: CustomUser):
         return True
     except CustomUser.DoesNotExist:
         raise ValidationError("El usuario no existe.")
-
 
 def edit_users_controller():
     pass

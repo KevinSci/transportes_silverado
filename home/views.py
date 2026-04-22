@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpRequest
 from django.contrib import messages
 from django.core.paginator import Paginator
-from .controllers import users
+from .controllers import users, assets
 
 
 # Solo los admins pueden acceder a las vistas
@@ -44,6 +44,20 @@ def edit_users(request: HttpRequest):
     pass
 
 # =========== Activos =========== #
+
+def show_assets(request: HttpRequest):
+    pass
+
+def create_asset(request: HttpRequest):
+    if request.method == 'POST':
+        try:
+            assets.create_asset_controller(request.POST)
+            messages.success(request, f"Activo creado con éxito.")
+            return redirect('assets')
+        except Exception as e:
+            messages.error(request, e.message)
+    return render(request, 'assets/create_asset.html')
+
 
 def maintenance(request):
     return render(request, 'maintenance.html')
