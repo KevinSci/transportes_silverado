@@ -1,0 +1,98 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es-MX">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Staff | Transportes Silverado</title>
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        /* Estilos específicos Mobile-First para Staff */
+        body {
+            padding-bottom: 70px; /* Espacio para la bottom nav */
+            background-color: var(--bg-color);
+        }
+        
+        .mobile-header {
+            background: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background: white;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
+            z-index: 1000;
+            /* Soporte para el área segura de iOS (Notch) */
+            padding-bottom: calc(10px + env(safe-area-inset-bottom));
+        }
+
+        .nav-item-mobile {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-size: 0.75rem;
+            gap: 4px;
+        }
+
+        .nav-item-mobile.active {
+            color: var(--text-active);
+            font-weight: 600;
+        }
+
+        .content-mobile {
+            padding: 15px;
+        }
+    </style>
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <header class="mobile-header">
+        <h3 style="margin:0; font-size: 1.1rem;">{% block page_title %}Taller{% endblock %}</h3>
+        <i data-lucide="bell" style="color: var(--text-secondary);"></i>
+    </header>
+
+    <main class="content-mobile">
+        {% comment %} Aqui ira el contenido de staff {% endcomment %}
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <nav class="bottom-nav">
+        <a href="{% url 'index_staff' %}" class="nav-item-mobile {% if request.resolver_match.url_name == 'index_staff' %}active{% endif %}">
+            <i data-lucide="home"></i>
+            <span>Inicio</span>
+        </a>
+        <a href="{% url 'maintenance_list' %}" class="nav-item-mobile {% if request.resolver_match.url_name == 'maintenance_list' %}active{% endif %}">
+            <i data-lucide="wrench"></i>
+            <span>Taller</span>
+        </a>
+        <form action="{% url 'logout' %}" method="post" style="display:inline;">
+            {% csrf_token %}
+            <button type="submit" class="nav-item-mobile" style="background:none; border:none; cursor:pointer;">
+                <i data-lucide="log-out"></i>
+                <span>Salir</span>
+            </button>
+        </form>
+    </nav>
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>lucide.createIcons();</script>
+</body>
+</html>

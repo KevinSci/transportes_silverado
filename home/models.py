@@ -1,4 +1,5 @@
 from django.db import models
+from django.conf import settings
 
 class Asset(models.Model):
     ASSET_TYPE_CHOICES = [
@@ -38,3 +39,58 @@ class Asset(models.Model):
 
     def __str__(self):
         return f"{self.get_asset_type_display()} - {self.number}"
+    
+
+class MaintenanceService(models.Model):
+    STATUS_CHOICES = [
+        ('pendiente', 'Pendiente'),
+        ('en_progreso', 'En Progreso'),
+        ('esperando_insumos', 'Esperando Cotización/Insumos'),
+        ('terminado', 'Terminado'),
+    ]
+
+    SERVICE_TYPES = [
+        ('preventivo', 'Preventivo'),
+        ('correctivo', 'Correctivo'),
+    ]
+
+    title = models.CharField(max_length=150, verbose_name="Título del Servicio")
+    description = models.TextField(verbose_name="Descripción del Problema/Servicio")
+    service_type = models.CharField(max_length=20, choices=SERVICE_TYPES, default='correctivo')
+    status = models.CharField(max_length=30, choices=STATUS_CHOICES, default='pendiente')
+    
+    # Relaciones
+    asset = models.ForeignKey('Asset', on_delete=models.CASCADE, related_name='services', verbose_name="Activo")
+    reported_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, related_name='reported_services')
+    
+    # Fechas
+    start_date = models.DateTimeField(null=True, blank=True, verbose_name="Fecha de Inicio")
+    end_date = models.DateTimeField(null=True, blank=True, verbose_name="Fecha de Término")
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        db_table = 'home_maintenance_service'
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return f"{self.title} - {self.asset.number}"
+
+
+class ServiceSupply(models.Model):
+    service = models.ForeignKey(MaintenanceService, on_delete=models.CASCADE, related_name='supplies')
+    name = models.CharField(max_length=150, verbose_name="Nombre del Insumo")
+    quantity = models.DecimalField(max_digits=8, decimal_places=2, default=1.0)
+    brand = models.CharField(max_length=100, null=True, blank=True, verbose_name="Marca")
+    model = models.CharField(max_length=100, null=True, blank=True, verbose_name="Modelo")
+    
+    needs_purchase = models.BooleanField(default=False, verbose_name="¿Requiere Compra?")
+    unit_price = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True, verbose_name="Precio Unitario (Admin)")
+    
+    def get_total_cost(self):
+        if self.unit_price and self.quantity:
+            return self.unit_price * self.quantity
+        return 0
+
+    class Meta:
+        db_table = 'home_service_supply'

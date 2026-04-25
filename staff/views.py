@@ -1,9 +1,25 @@
 from django.shortcuts import render
-from django.contrib.auth.decorators import user_passes_test
+from .controllers import maintenance as maintenance_ctrl
+from django.http import HttpRequest
 
-def is_staff_user(user):
-    return user.is_authenticated and user.role == 'staff'
 
-@user_passes_test(is_staff_user, login_url='login')
 def index(request):
     return render(request, 'index_staff.html')
+
+def staff_maintenance_list(request):
+    """Vista para listar servicios activos en la vista mobile del staff"""
+    active_services = maintenance_ctrl.get_active_services_for_staff()
+    
+    return render(request, 'maintenance/maintenance_list.html', {
+        'services': active_services
+    })
+
+def create_maintenance_service(request: HttpRequest):
+    pass
+
+def edit_maintenance_service(request: HttpRequest):
+    pass
+
+def delete_maintenance_service(request: HttpRequest):
+    pass
+

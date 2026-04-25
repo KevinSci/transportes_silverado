@@ -12,8 +12,7 @@ class RoleBasedLoginView(LoginView):
         if user.role in ['administrador', 'propietario']:
             return reverse_lazy('index_admin')  # Nombre de la URL de tu dashboard
         elif user.role == 'staff':
-            # Asumimos que crearás una vista y URL llamada 'staff_home' en el módulo staff
-            return reverse_lazy('index_staff') 
+            return reverse_lazy('maintenance_list') 
         
         # Fallback de seguridad
         return reverse_lazy('login')
