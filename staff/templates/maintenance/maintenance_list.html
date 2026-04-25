@@ -1,36 +1,40 @@
 {% extends 'mobile.html' %}
+{% load static %}
 
-{% block page_title %}Servicios Activos{% endblock %}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/staff_maintenance.css' %}">
+{% endblock %}
+
+{% block page_title %}Taller Silverado{% endblock %}
 
 {% block content %}
 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-    <h4 style="margin:0;">En Progreso</h4>
-    <a href="#" class="action-btn" style="padding: 8px 12px; font-size: 0.8rem; background: var(--accent-color); color: white;">
-        <i data-lucide="plus" style="width: 14px; height: 14px;"></i> Nuevo
+    <h4 style="margin:0;">Servicios Activos</h4>
+    <a href="{% url 'create_maintenance_service' %}" class="action-btn" style="padding: 10px 15px; background: var(--accent-color); color: white; text-decoration: none;">
+        <i data-lucide="plus" style="width: 16px;"></i> Nuevo
     </a>
 </div>
 
-<div class="services-list" style="display: flex; flex-direction: column; gap: 15px;">
+<div class="services-list" style="display: flex; flex-direction: column; gap: 12px;">
     {% for service in services %}
-    <div class="metric-card no-roundness" style="padding: 15px;">
-        <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
-            <strong>Unidad: {{ service.asset.number }}</strong>
-            <span style="font-size: 0.75rem; padding: 3px 8px; background: #eee; border-radius: 10px;">
+    <div class="metric-card no-roundness" style="padding: 15px; border: 1px solid #eee;">
+        <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 8px;">
+            <span style="font-weight: 700; font-size: 1.1rem;">{{ service.asset.number }}</span>
+            <span class="status-badge status-{{ service.status }}">
                 {{ service.get_status_display }}
             </span>
         </div>
-        <h3 style="margin-bottom: 5px; font-size: 1rem; color: var(--text-primary);">{{ service.title }}</h3>
-        <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 10px;">
-            {{ service.description|truncatechars:60 }}
-        </p>
-        <div style="display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--text-muted);">
-            <span><i data-lucide="calendar" style="width: 12px; height: 12px;"></i> {{ service.created_at|date:"d M" }}</span>
-            <a href="#" style="color: var(--text-active); font-weight: 500; text-decoration: none;">Ver Detalle -></a>
+        <h5 style="margin: 0 0 5px 0; color: #374151;">{{ service.title }}</h5>
+        <p style="font-size: 0.85rem; color: #6b7280; margin: 0 0 12px 0;">{{ service.description|truncatechars:80 }}</p>
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <span style="font-size: 0.75rem; color: #9ca3af;">Iniciado: {{ service.start_date|date:"d/m/y H:i" }}</span>
+            <a href="#" style="color: var(--accent-line); font-size: 0.85rem; font-weight: 600; text-decoration: none;">Detalles</a>
         </div>
     </div>
     {% empty %}
-    <div class="placeholder-box no-roundness">
-        No hay servicios activos en este momento.
+    <div style="text-align: center; padding: 40px; color: #9ca3af;">
+        <i data-lucide="clipboard-x" style="width: 48px; height: 48px; margin-bottom: 10px;"></i>
+        <p>No hay mantenimientos pendientes</p>
     </div>
     {% endfor %}
 </div>
