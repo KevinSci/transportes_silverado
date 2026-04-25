@@ -1,5 +1,9 @@
+{% extends "mobile.html" %}
+
+{% block content %}
 <div class="data-section no-roundness">
     <h3>Bienvenido, {{ request.user.username }}</h3>
     <h1>Index</h1>
     <p>Este es el panel exclusivo para el personal staff.</p>
 </div>
+{% endblock content %}

@@ -1,90 +1,108 @@
 {% extends 'mobile.html' %}
 {% load static %}
 
+{% block page_title %}Nuevo Mantenimiento{% endblock %}
+
 {% block extra_css %}
-<link rel="stylesheet" href="{% static 'css/staff_maintenance.css' %}">
+<link rel="stylesheet" href="{% static 'css/staff_create_form.css' %}">
 {% endblock %}
 
 {% block content %}
-<form method="post" class="maintenance-form">
+<form method="POST" action="" id="maintenance-form" class="strict-form">
     {% csrf_token %}
     
-    <div class="input-container">
-        <label>UNIDAD</label>
-        <select name="asset" class="field-staff" required>
-            <option value="" disabled selected>Selecciona unidad...</option>
+    <div class="form-section">
+        <label for="asset">Activo <span class="required">*</span></label>
+        <select name="asset_id" id="asset" required class="form-input">
+            <option value="" disabled selected>Selecciona un activo...</option>
             {% for asset in assets %}
-            <option value="{{ asset.id }}">{{ asset.number }} - {{ asset.get_asset_type_display }}</option>
+                <option value="{{ asset.id }}">{{ asset.get_asset_type_display }} - {{ asset.number }}</option>
             {% endfor %}
         </select>
     </div>
 
-    <div class="input-container">
-        <label>TÍTULO DEL SERVICIO</label>
-        <input type="text" name="title" class="field-staff" placeholder="Ej. Cambio de aceites y filtros" required>
-    </div>
-
-    <div class="form-grid-half">
-        <div class="input-container">
-            <label>TIPO</label>
-            <select name="service_type" class="field-staff">
+    <div class="form-section row">
+        <div class="col">
+            <label for="service_type">Tipo de Servicio <span class="required">*</span></label>
+            <select name="service_type" id="service_type" required class="form-input">
                 <option value="correctivo">Correctivo</option>
                 <option value="preventivo">Preventivo</option>
             </select>
         </div>
-        <div class="input-container">
-            <label>FECHA INICIO</label>
-            <input type="datetime-local" name="start_date" class="field-staff" value="{{ now|date:'Y-m-d\TH:i' }}">
+        <div class="col">
+            <label for="start_date">Fecha Inicio</label>
+            <input type="datetime-local" name="start_date" id="start_date" class="form-input" value="{{ now|date:'Y-m-d\TH:i' }}" required>
         </div>
     </div>
 
-    <div class="input-container">
-        <label>NOTAS / DESCRIPCIÓN</label>
-        <textarea name="description" class="field-staff" rows="3" placeholder="Detalles adicionales..."></textarea>
+    <div class="form-section">
+        <label for="title">Título del Servicio <span class="required">*</span></label>
+        <input type="text" name="title" id="title" required class="form-input" placeholder="Ej. Cambio de balatas">
     </div>
 
-    <div class="section-divider">
-        <div class="section-header-flex">
-            <label class="section-title-label">PIEZAS E INSUMOS</label>
-            <button type="button" id="add-supply-btn" class="add-supply-trigger">
-                <i data-lucide="plus"></i>
-            </button>
+    <div class="form-section">
+        <label for="description">Descripción / Observaciones <span class="required">*</span></label>
+        <textarea name="description" id="description" rows="3" required class="form-input" placeholder="Detalle el problema o trabajo a realizar..."></textarea>
+    </div>
+
+    <div class="form-section border-top">
+        <div class="section-header">
+            <h4>Insumos Requeridos</h4>
         </div>
-        
-        <div id="supplies-container">
+        <div id="supplies-list" class="supplies-container">
             </div>
     </div>
 
-    <div class="form-footer">
-        <a href="{% url 'maintenance_list' %}" class="action-btn btn-secondary">
-            Descartar
-        </a>
-        <button type="submit" class="action-btn btn-primary">
-            Guardar Reporte
-        </button>
-    </div>
+    <button type="submit" class="btn-primary full-width mt-20">INICIAR SERVICIO</button>
 </form>
 
-<template id="supply-row-template">
-    <div class="supply-card no-roundness">
-        <div class="supply-grid">
-            <input type="text" name="supply_names[]" placeholder="Nombre de la pieza" class="field-staff supply-full" required>
-            <input type="text" name="supply_brands[]" placeholder="Marca" class="field-staff">
-            <input type="text" name="supply_models[]" placeholder="Modelo / Parte #" class="field-staff">
-            <input type="number" name="supply_qtys[]" placeholder="Cant." class="field-staff supply-full" step="0.1" value="1">
-            
-            <div class="flex-between-center supply-full">
-                <label class="purchase-option">
-                    <input type="checkbox" class="purchase-checkbox"> ¿Necesario comprar?
-                    <input type="hidden" name="supply_needs_purchase[]" value="false" class="purchase-hidden">
-                </label>
-                <button type="button" class="remove-supply-btn">Eliminar</button>
+<button type="button" id="btn-add-supply" class="fab-button" aria-label="Agregar Insumo">
+    <i data-lucide="plus"></i>
+</button>
+
+<div id="supply-modal" class="modal-overlay hidden">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>Agregar Insumo</h3>
+            <button type="button" id="btn-close-modal" class="btn-icon"><i data-lucide="x"></i></button>
+        </div>
+        <div class="modal-body">
+            <div class="form-section">
+                <label>Nombre del Insumo *</label>
+                <input type="text" id="modal-name" class="form-input" placeholder="Ej. Filtro de aceite">
+            </div>
+            <div class="form-section row">
+                <div class="col">
+                    <label>Marca</label>
+                    <input type="text" id="modal-brand" class="form-input" placeholder="Opcional">
+                </div>
+                <div class="col">
+                    <label>Modelo</label>
+                    <input type="text" id="modal-model" class="form-input" placeholder="Opcional">
+                </div>
+            </div>
+            <div class="form-section row align-end">
+                <div class="col">
+                    <label>Cantidad *</label>
+                    <input type="number" id="modal-qty" class="form-input" value="1" min="0.1" step="0.1">
+                </div>
+                <div class="col checkbox-col">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="modal-purchase">
+                        <span class="checkbox-custom"></span>
+                        ¿Requiere Compra?
+                    </label>
+                </div>
             </div>
         </div>
+        <div class="modal-footer">
+            <button type="button" id="btn-discard-supply" class="btn-secondary">Descartar</button>
+            <button type="button" id="btn-save-supply" class="btn-primary">Guardar Insumo</button>
+        </div>
     </div>
-</template>
+</div>
 {% endblock %}
 
 {% block extra_js %}
-<script src="{% static 'js/staff_maintenance.js' %}"></script>
+<script src="{% static 'js/staff_create_form.js' %}"></script>
 {% endblock %}

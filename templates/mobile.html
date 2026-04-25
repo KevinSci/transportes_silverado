@@ -69,9 +69,12 @@
     </header>
 
     <main class="content-mobile">
-        {% comment %} Aqui ira el contenido de staff {% endcomment %}
+
+
         {% block content %}
         {% endblock %}
+
+
     </main>
 
     <nav class="bottom-nav">
@@ -94,5 +97,11 @@
 
     <script src="https://unpkg.com/lucide@latest"></script>
     <script>lucide.createIcons();</script>
+
+
+    {% block extra_js %}
+    {% endblock extra_js %}
+
+    
 </body>
 </html>

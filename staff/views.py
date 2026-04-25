@@ -10,7 +10,6 @@ def index(request):
     return render(request, 'index_staff.html')
 
 def staff_maintenance_list(request):
-    """Vista para listar servicios activos en la vista mobile del staff"""
     active_services = maintenance_ctrl.get_active_services_for_staff()
     
     return render(request, 'maintenance/maintenance_list.html', {

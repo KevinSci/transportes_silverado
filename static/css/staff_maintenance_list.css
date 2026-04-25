@@ -1,0 +1,131 @@
+.maintenance-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.section-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-primary, #1a1a1a);
+    margin: 0 0 10px 0;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.service-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.service-card {
+    background: #ffffff;
+    border: 1px solid #e5e5e5;
+    border-radius: 0; /* Bordes rectos */
+    padding: 12px 16px;
+    box-shadow: 2px 2px 0px rgba(0,0,0,0.05); /* Sombra dura, formal */
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.service-id {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: #4a4a4a;
+}
+
+.status-badge {
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 2px 6px;
+    border-radius: 0;
+    text-transform: uppercase;
+}
+
+/* Sistema de colores de estado rígido */
+.status-pendiente { background: #f3f4f6; color: #4b5563; border: 1px solid #d1d5db; }
+.status-en_progreso { background: #eff6ff; color: #1d4ed8; border: 1px solid #bfdbfe; }
+.status-esperando_insumos { background: #fefce8; color: #a16207; border: 1px solid #fef08a; }
+.status-terminado { background: #f0fdf4; color: #15803d; border: 1px solid #bbf7d0; }
+
+.card-body {
+    margin-bottom: 12px;
+}
+
+.service-title {
+    margin: 0 0 4px 0;
+    font-size: 1rem;
+    color: #111827;
+}
+
+.service-asset {
+    font-size: 0.85rem;
+    color: #6b7280;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin: 0 0 4px 0;
+}
+
+.service-asset i {
+    width: 14px;
+    height: 14px;
+}
+
+.service-desc {
+    font-size: 0.85rem;
+    color: #4b5563;
+    margin: 0;
+    line-height: 1.4;
+}
+
+.card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid #f3f4f6;
+    padding-top: 8px;
+    font-size: 0.75rem;
+    color: #9ca3af;
+}
+
+.service-type {
+    font-weight: 600;
+}
+.type-preventivo { color: #0284c7; }
+.type-correctivo { color: #dc2626; }
+
+.fab-button {
+    position: fixed;
+    bottom: 85px; /* Ajustado por el bottom-nav */
+    right: 20px;
+    width: 50px;
+    height: 50px;
+    background: #111827;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0; /* Geometría estricta */
+    box-shadow: 3px 3px 0px rgba(0,0,0,0.2);
+    z-index: 100;
+    text-decoration: none;
+    transition: transform 0.1s;
+}
+
+.fab-button:active {
+    transform: translate(2px, 2px);
+    box-shadow: 1px 1px 0px rgba(0,0,0,0.2);
+}
+
+.empty-state {
+    text-align: center;
+    padding: 40px 20px;
+    color: #6b7280;
+}

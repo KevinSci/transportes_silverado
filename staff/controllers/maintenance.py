@@ -5,10 +5,6 @@ from django.utils import timezone
 from home.models import MaintenanceService, Asset, ServiceSupply
 
 def get_active_services_for_staff():
-    """
-    Retorna los servicios que no están terminados, 
-    optimizando la consulta trayendo el activo relacionado.
-    """
     return MaintenanceService.objects.select_related('asset').exclude(status='terminado').order_by('-created_at')
 
 def create_maintenance_service_controller(data, user):

@@ -1,41 +1,49 @@
-{% extends 'mobile.html' %}
+{% extends 'mobile.html' %} {# Asumiendo que tu base se llama así #}
 {% load static %}
 
+{% block page_title %}Mantenimientos{% endblock %}
+
 {% block extra_css %}
-<link rel="stylesheet" href="{% static 'css/staff_maintenance.css' %}">
+<link rel="stylesheet" href="{% static 'css/staff_maintenance_list.css' %}">
 {% endblock %}
 
 {% block content %}
-<div class="maintenance-header">
-    <h2 class="maintenance-title">Servicios Activos</h2>
-    <a href="{% url 'create_maintenance_service' %}" class="action-btn btn-primary">
-        <i data-lucide="plus"></i> Nuevo
-    </a>
-</div>
+<div class="maintenance-container">
+    <div class="list-header">
+        <h2 class="section-title">Servicios Activos</h2>
+    </div>
 
-<div class="maintenance-feed">
-    {% for service in services %}
-    <div class="metric-card no-roundness service-list-card">
-        <div class="card-header-flex">
-            <strong class="unit-number-text">{{ service.asset.number }}</strong>
-            <span class="status-badge status-{{ service.status }}">
-                {{ service.get_status_display }}
-            </span>
+    <div class="service-list">
+        {% for service in services %}
+        <div class="service-card">
+            <div class="card-header">
+                <span class="service-id">#{{ service.id|stringformat:"04d" }}</span>
+                <span class="status-badge status-{{ service.status }}">
+                    {{ service.get_status_display }}
+                </span>
+            </div>
+            <div class="card-body">
+                <h4 class="service-title">{{ service.title }}</h4>
+                <p class="service-asset">
+                    <i data-lucide="truck"></i> {{ service.asset.get_asset_type_display }} - {{ service.asset.number }}
+                </p>
+                <p class="service-desc">{{ service.description|truncatechars:80 }}</p>
+            </div>
+            <div class="card-footer">
+                <span class="service-type type-{{ service.service_type }}">{{ service.get_service_type_display }}</span>
+                <span class="service-date">{{ service.created_at|date:"d/m/Y H:i" }}</span>
+            </div>
         </div>
-        <h4 class="service-card-title">{{ service.title }}</h4>
-        <p class="service-card-desc">
-            {{ service.description|truncatechars:90 }}
-        </p>
-        <div class="card-footer-flex">
-            <span><i data-lucide="calendar" class="icon-small-inline"></i> {{ service.start_date|date:"d/m/y H:i" }}</span>
-            <a href="#" class="manage-link">Gestionar</a>
+        {% empty %}
+        <div class="empty-state">
+            <i data-lucide="inbox"></i>
+            <p>No hay mantenimientos activos en este momento.</p>
         </div>
+        {% endfor %}
     </div>
-    {% empty %}
-    <div class="empty-state-container">
-        <i data-lucide="tool" class="icon-large-muted"></i>
-        <p>No hay servicios registrados</p>
-    </div>
-    {% endfor %}
+
+    <a href="{% url 'create_maintenance' %}" class="fab-button" aria-label="Nuevo Servicio">
+        <i data-lucide="plus"></i>
+    </a>
 </div>
 {% endblock %}
