@@ -9,10 +9,23 @@ def get_active_services_for_staff():
 
 def create_maintenance_service_controller(data, user):
     with transaction.atomic():
+        # 1. Determinar el estado inicial basado en los insumos
+        needs_purchase_list = data.getlist('supply_needs_purchase[]')
+        # Si alguno es "true", el estado es 'esperando_insumos'
+        status_inicial = 'esperando_insumos' if "true" in needs_purchase_list else 'pendiente'
+
+        # 2. Crear el servicio con datos reales del POST
         service = MaintenanceService.objects.create(
-            # ... (campos del servicio se mantienen igual)
+            asset_id=data.get('asset_id'),
+            title=data.get('title'),
+            description=data.get('description'),
+            service_type=data.get('service_type', 'correctivo'),
+            start_date=data.get('start_date') or timezone.now(),
+            reported_by=user,
+            status=status_inicial
         )
 
+        # 3. Procesar y guardar los insumos
         names = data.getlist('supply_names[]')
         brands = data.getlist('supply_brands[]')
         models = data.getlist('supply_models[]')
@@ -34,5 +47,6 @@ def create_maintenance_service_controller(data, user):
 
         if supplies:
             ServiceSupply.objects.bulk_create(supplies)
+            
     return service
 
