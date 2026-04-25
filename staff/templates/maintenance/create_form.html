@@ -1,0 +1,114 @@
+{% extends 'mobile.html' %}
+{% load static %}
+
+{% block page_title %}Reportar Servicio{% endblock %}
+
+{% block content %}
+<div class="data-section no-roundness" style="padding: 15px;">
+    <form method="post" id="maintenance-form">
+        {% csrf_token %}
+        
+        <div class="form-group" style="margin-bottom: 15px;">
+            <label>Unidad (Activo)</label>
+            <select name="asset" class="filter-select no-roundness" style="width: 100%;" required>
+                <option value="" disabled selected>Selecciona unidad...</option>
+                {% for asset in assets %}
+                <option value="{{ asset.id }}">{{ asset.number }} - {{ asset.get_asset_type_display }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="form-group" style="margin-bottom: 15px;">
+            <label>Título del Servicio</label>
+            <input type="text" name="title" class="filter-select no-roundness" placeholder="Ej. Cambio de balatas" required>
+        </div>
+
+        <div class="form-grid" style="grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px;">
+            <div class="form-group">
+                <label>Tipo</label>
+                <select name="service_type" class="filter-select no-roundness">
+                    <option value="correctivo">Correctivo</option>
+                    <option value="preventivo">Preventivo</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Inicio</label>
+                <input type="datetime-local" name="start_date" value="{{ now|date:'Y-m-d\TH:i' }}" class="filter-select no-roundness">
+            </div>
+        </div>
+
+        <div class="form-group" style="margin-bottom: 20px;">
+            <label>Descripción detallada</label>
+            <textarea name="description" rows="3" class="filter-select no-roundness" style="height: auto;"></textarea>
+        </div>
+
+        <div style="border-top: 2px solid var(--bg-color); padding-top: 15px; margin-bottom: 20px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                <h4 style="margin:0; font-size: 0.9rem; color: var(--accent-color);">INSUMOS Y PIEZAS</h4>
+                <button type="button" id="add-supply-btn" class="action-btn" style="padding: 5px 10px; background: var(--accent-color); color: white;">
+                    <i data-lucide="plus"></i>
+                </button>
+            </div>
+            
+            <div id="supplies-container">
+                </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 30px;">
+            <a href="{% url 'maintenance_list' %}" class="action-btn btn-danger-outline" style="text-align: center;">
+                Descartar
+            </a>
+            <button type="submit" class="action-btn" style="background: var(--accent-line); color: white;">
+                Crear Servicio
+            </button>
+        </div>
+    </form>
+</div>
+
+<template id="supply-row-template">
+    <div class="supply-row metric-card no-roundness" style="padding: 10px; margin-bottom: 10px; position: relative;">
+        <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 8px; margin-bottom: 10px;">
+            <input type="text" name="supply_names[]" placeholder="Pieza/Insumo" class="filter-select no-roundness" style="font-size: 0.8rem;" required>
+            <input type="number" name="supply_qtys[]" value="1" step="0.1" class="filter-select no-roundness" style="font-size: 0.8rem;" required>
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <label style="font-size: 0.75rem; display: flex; align-items: center; gap: 5px;">
+                <input type="checkbox" class="purchase-checkbox"> ¿Requiere comprar?
+                <input type="hidden" name="supply_needs_purchase[]" value="false">
+            </label>
+            <button type="button" class="remove-row-btn" style="background: none; border: none; color: var(--danger-color);">
+                <i data-lucide="trash-2" style="width: 16px;"></i>
+            </button>
+        </div>
+    </div>
+</template>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const container = document.getElementById('supplies-container');
+    const template = document.getElementById('supply-row-template');
+    const addBtn = document.getElementById('add-supply-btn');
+
+    const addRow = () => {
+        const clone = template.content.cloneNode(true);
+        const row = clone.querySelector('.supply-row');
+        
+        // Manejo del checkbox para trazabilidad
+        const checkbox = row.querySelector('.purchase-checkbox');
+        const hiddenInput = row.querySelector('input[type="hidden"]');
+        checkbox.addEventListener('change', () => {
+            hiddenInput.value = checkbox.checked ? "true" : "false";
+        });
+
+        // Botón eliminar
+        row.querySelector('.remove-row-btn').addEventListener('click', () => row.remove());
+        
+        container.appendChild(clone);
+        if (typeof lucide !== 'undefined') lucide.createIcons();
+    };
+
+    addBtn.addEventListener('click', addRow);
+    addRow(); // Agregar la primera fila por defecto
+});
+</script>
+{% endblock %}

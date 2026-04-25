@@ -1,6 +1,9 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .controllers import maintenance as maintenance_ctrl
 from django.http import HttpRequest
+from django.contrib import messages
+from django.utils import timezone
+from home.models import Asset
 
 
 def index(request):
@@ -15,7 +18,18 @@ def staff_maintenance_list(request):
     })
 
 def create_maintenance_service(request: HttpRequest):
-    pass
+    if request.method == 'POST':
+        try:
+            maintenance_ctrl.create_maintenance_service_controller(request.POST, request.user)
+            messages.success(request, "Servicio iniciado correctamente.")
+            return redirect('staff:maintenance_list')
+        except Exception as e:
+            messages.error(request, f"Error al procesar: {str(e)}")
+
+    return render(request, 'maintenance/create_form.html', {
+        'assets': Asset.objects.all(),
+        'now': timezone.now()
+    })
 
 def edit_maintenance_service(request: HttpRequest):
     pass
