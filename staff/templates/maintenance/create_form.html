@@ -5,80 +5,81 @@
 <link rel="stylesheet" href="{% static 'css/staff_maintenance.css' %}">
 {% endblock %}
 
-{% block page_title %}Nuevo Reporte{% endblock %}
-
 {% block content %}
-<form method="post" class="mobile-form-container">
+<form method="post" class="maintenance-form">
     {% csrf_token %}
     
-    <div>
-        <label style="font-size: 0.8rem; font-weight: 600;">UNIDAD</label>
-        <select name="asset" class="input-minimal" required>
-            <option value="">Seleccionar activo...</option>
+    <div class="input-container">
+        <label>UNIDAD</label>
+        <select name="asset" class="field-staff" required>
+            <option value="" disabled selected>Selecciona unidad...</option>
             {% for asset in assets %}
             <option value="{{ asset.id }}">{{ asset.number }} - {{ asset.get_asset_type_display }}</option>
             {% endfor %}
         </select>
     </div>
 
-    <div>
-        <label style="font-size: 0.8rem; font-weight: 600;">¿QUÉ TIENE LA UNIDAD?</label>
-        <input type="text" name="title" class="input-minimal" placeholder="Ej. Fuga de aire en manguera" required>
+    <div class="input-container">
+        <label>TÍTULO DEL SERVICIO</label>
+        <input type="text" name="title" class="field-staff" placeholder="Ej. Cambio de aceites y filtros" required>
     </div>
 
-    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-        <div>
-            <label style="font-size: 0.8rem; font-weight: 600;">TIPO</label>
-            <select name="service_type" class="input-minimal">
+    <div class="form-grid-half">
+        <div class="input-container">
+            <label>TIPO</label>
+            <select name="service_type" class="field-staff">
                 <option value="correctivo">Correctivo</option>
                 <option value="preventivo">Preventivo</option>
             </select>
         </div>
-        <div>
-            <label style="font-size: 0.8rem; font-weight: 600;">FECHA INICIO</label>
-            <input type="datetime-local" name="start_date" class="input-minimal" value="{{ now|date:'Y-m-d\TH:i' }}">
+        <div class="input-container">
+            <label>FECHA INICIO</label>
+            <input type="datetime-local" name="start_date" class="field-staff" value="{{ now|date:'Y-m-d\TH:i' }}">
         </div>
     </div>
 
-    <div style="margin-top: 10px;">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-            <span style="font-size: 0.8rem; font-weight: 700; color: var(--accent-line);">INSUMOS REQUERIDOS</span>
-            <button type="button" id="add-supply-btn" style="background: var(--accent-line); color: white; border: none; border-radius: 50%; width: 28px; height: 28px;">
-                <i data-lucide="plus" style="width: 16px;"></i>
+    <div class="input-container">
+        <label>NOTAS / DESCRIPCIÓN</label>
+        <textarea name="description" class="field-staff" rows="3" placeholder="Detalles adicionales..."></textarea>
+    </div>
+
+    <div class="section-divider">
+        <div class="section-header-flex">
+            <label class="section-title-label">PIEZAS E INSUMOS</label>
+            <button type="button" id="add-supply-btn" class="add-supply-trigger">
+                <i data-lucide="plus"></i>
             </button>
         </div>
+        
         <div id="supplies-container">
             </div>
     </div>
 
-    <div class="form-actions-sticky">
-        <a href="{% url 'maintenance_list' %}" class="action-btn" style="text-align: center; background: #f3f4f6; color: #374151; border: 1px solid #d1d5db;">
-            Cancelar
+    <div class="form-footer">
+        <a href="{% url 'maintenance_list' %}" class="action-btn btn-secondary">
+            Descartar
         </a>
-        <button type="submit" class="action-btn" style="background: var(--accent-line); color: white; border: none;">
-            Guardar
+        <button type="submit" class="action-btn btn-primary">
+            Guardar Reporte
         </button>
     </div>
 </form>
 
 <template id="supply-row-template">
-    <div class="supply-card metric-card no-roundness">
-        <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 5px; margin-bottom: 5px;">
-            <input type="text" name="supply_names[]" placeholder="Pieza" class="input-minimal" required>
-            <input type="number" name="supply_qtys[]" placeholder="Cant" class="input-minimal" value="1" step="0.1">
-        </div>
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 5px; margin-bottom: 8px;">
-            <input type="text" name="supply_brands[]" placeholder="Marca" class="input-minimal">
-            <input type="text" name="supply_models[]" placeholder="Modelo" class="input-minimal">
-        </div>
-        <div style="display: flex; justify-content: space-between; align-items: center;">
-            <label style="font-size: 0.75rem; display: flex; align-items: center; gap: 5px; color: #4b5563;">
-                <input type="checkbox" class="purchase-checkbox"> ¿Requiere comprar?
-                <input type="hidden" name="supply_needs_purchase[]" value="false" class="purchase-hidden">
-            </label>
-            <button type="button" class="btn-remove">
-                <i data-lucide="trash-2" style="width: 18px;"></i>
-            </button>
+    <div class="supply-card no-roundness">
+        <div class="supply-grid">
+            <input type="text" name="supply_names[]" placeholder="Nombre de la pieza" class="field-staff supply-full" required>
+            <input type="text" name="supply_brands[]" placeholder="Marca" class="field-staff">
+            <input type="text" name="supply_models[]" placeholder="Modelo / Parte #" class="field-staff">
+            <input type="number" name="supply_qtys[]" placeholder="Cant." class="field-staff supply-full" step="0.1" value="1">
+            
+            <div class="flex-between-center supply-full">
+                <label class="purchase-option">
+                    <input type="checkbox" class="purchase-checkbox"> ¿Necesario comprar?
+                    <input type="hidden" name="supply_needs_purchase[]" value="false" class="purchase-hidden">
+                </label>
+                <button type="button" class="remove-supply-btn">Eliminar</button>
+            </div>
         </div>
     </div>
 </template>

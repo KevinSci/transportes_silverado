@@ -1,43 +1,48 @@
-/**
- * Gestión dinámica de insumos para Transportes Silverado
- */
-const SupplyManager = {
-    container: document.getElementById('supplies-container'),
-    template: document.getElementById('supply-row-template'),
+document.addEventListener('DOMContentLoaded', () => {
+    const container = document.getElementById('supplies-container');
+    const template = document.getElementById('supply-row-template');
+    const addBtn = document.getElementById('add-supply-btn');
 
-    init() {
-        if (!this.container || !this.template) return;
-        
-        document.getElementById('add-supply-btn').addEventListener('click', () => this.addRow());
-        
-        // Agregar fila inicial si está vacío
-        if (this.container.children.length === 0) {
-            this.addRow();
-        }
-    },
+    // Función para añadir una nueva fila de insumos
+    const addNewSupply = () => {
+        if (!template || !container) return;
 
-    addRow() {
-        const clone = this.template.content.cloneNode(true);
-        const row = clone.querySelector('.supply-card');
+        const clone = template.content.cloneNode(true);
+        const card = clone.querySelector('.supply-card');
         
-        // Sincronizar Checkbox con Input Oculto para Django
-        const checkbox = row.querySelector('.purchase-checkbox');
-        const hiddenInput = row.querySelector('.purchase-hidden');
+        // Sincronización del checkbox de compra para el backend
+        const checkbox = card.querySelector('.purchase-checkbox');
+        const hiddenInput = card.querySelector('.purchase-hidden');
         
         checkbox.addEventListener('change', (e) => {
             hiddenInput.value = e.target.checked ? "true" : "false";
         });
 
-        // Botón Eliminar
-        row.querySelector('.btn-remove').addEventListener('click', () => {
-            if (this.container.children.length > 1) {
-                row.remove();
+        // Eliminar fila
+        card.querySelector('.remove-supply-btn').addEventListener('click', () => {
+            if (container.querySelectorAll('.supply-card').length > 1) {
+                card.remove();
             }
         });
 
-        this.container.appendChild(clone);
-        if (window.lucide) window.lucide.createIcons();
-    }
-};
+        container.appendChild(clone);
+        
+        // Refrescar iconos de Lucide
+        if (window.lucide) {
+            window.lucide.createIcons();
+        }
+    };
 
-document.addEventListener('DOMContentLoaded', () => SupplyManager.init());
+    // Evento del botón "+"
+    if (addBtn) {
+        addBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            addNewSupply();
+        });
+    }
+
+    // Insertar la primera fila por defecto al cargar
+    if (container && container.children.length === 0) {
+        addNewSupply();
+    }
+});
