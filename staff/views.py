@@ -21,7 +21,7 @@ def create_maintenance_service(request: HttpRequest):
         try:
             maintenance_ctrl.create_maintenance_service_controller(request.POST, request.user)
             messages.success(request, "Servicio iniciado correctamente.")
-            return redirect('staff:maintenance_list')
+            return redirect('maintenance_list')
         except Exception as e:
             messages.error(request, f"Error al procesar: {str(e)}")
 
