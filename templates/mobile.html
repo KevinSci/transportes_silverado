@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Staff | Transportes Silverado</title>
     <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <link rel="stylesheet" href="{% static 'css/mobile.css' %}">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
         /* Estilos específicos Mobile-First para Staff */
@@ -69,6 +70,26 @@
     </header>
 
     <main class="content-mobile">
+        {% if messages %}
+        <div class="messages-container" style="padding-bottom: 15px; display: flex; flex-direction: column; gap: 10px;">
+            {% for message in messages %}
+                <div class="alert-box no-roundness">
+                    <div class="alert-icon" style="margin-right: 10px; display: flex; align-items: center;">
+                        {% if message.tags == 'success' %}
+                            <i data-lucide="check-circle"></i>
+                        {% elif message.tags == 'error' %}
+                            <i data-lucide="alert-circle"></i>
+                        {% else %}
+                            <i data-lucide="info"></i>
+                        {% endif %}
+                    </div>
+                    <div class="alert-content" style="flex: 1;">
+                        {{ message }}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
 
 
         {% block content %}
