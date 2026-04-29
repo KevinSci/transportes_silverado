@@ -50,3 +50,10 @@ def create_maintenance_service_controller(data, user):
             
     return service
 
+
+def edit_maintenance_service_controller(request):
+    pass
+
+def delete_maintenance_service_controller(request):
+    pass
+
