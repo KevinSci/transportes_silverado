@@ -1,0 +1,51 @@
+{% extends 'mobile.html' %} 
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Editar Servicio de Mantenimiento</h2>
+    <hr>
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <form method="POST" action="{% url 'edit_maintenance' service.id %}">
+                {% csrf_token %}
+                
+                <!-- Campo: Título -->
+                <div class="mb-3">
+                    <label for="title" class="form-label">Título del Servicio</label>
+                    <input type="text" class="form-control" id="title" name="title" 
+                           value="{{ service.title }}" required>
+                </div>
+
+                <!-- Campo: Descripción -->
+                <div class="mb-3">
+                    <label for="description" class="form-label">Descripción</label>
+                    <textarea class="form-control" id="description" name="description" rows="3">{{ service.description }}</textarea>
+                </div>
+
+                <!-- Campo: Estado (Ejemplo de un select) -->
+                <div class="mb-3">
+                    <label for="status" class="form-label">Estado</label>
+                    <select class="form-select" id="status" name="status">
+                        <!-- Comparamos el valor actual para poner el atributo 'selected' -->
+                        <option value="Pendiente" {% if service.status == 'Pendiente' %}selected{% endif %}>Pendiente</option>
+                        <option value="En Progreso" {% if service.status == 'En Progreso' %}selected{% endif %}>En Progreso</option>
+                        <option value="Completado" {% if service.status == 'Completado' %}selected{% endif %}>Completado</option>
+                    </select>
+                </div>
+                
+                <div class="mt-4">
+                    <button type="submit" class="btn btn-success">Guardar Cambios</button>
+                    <a href="{% url 'maintenance_list' %}" class="btn btn-secondary">Cancelar</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

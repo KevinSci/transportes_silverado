@@ -51,9 +51,26 @@ def create_maintenance_service_controller(data, user):
     return service
 
 
-def edit_maintenance_service_controller(request):
-    pass
+def edit_maintenance_service_controller(service_id: int, data: dict):
+    service = MaintenanceService.objects.filter(id=service_id).first()
+    
+    if not service:
+        raise ValueError("El servicio de mantenimiento no existe.")
 
-def delete_maintenance_service_controller(request):
-    pass
+    if not data.get('title') or str(data.get('title')).strip() == '':
+        raise ValueError("El título del servicio no puede estar vacío.")
+
+    service.title = data.get('title')
+    service.description = data.get('description', '') 
+    service.status = data.get('status')    
+    service.save()
+    return service
+
+def delete_maintenance_service_controller(service_id: int):
+    service = MaintenanceService.objects.filter(id=service_id).first()
+    if not service:
+        raise ValueError("El servicio que intentas eliminar no fue encontrado.")
+        
+    service.delete()
+    return True
 
